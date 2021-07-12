@@ -29,8 +29,8 @@ set -e
 
 usage()
 {
-	printf "%b" "Usage: $0 [OPTIONS] { build | checkout | shell } [KASOPTIONS] KASFILE\n"
-	printf "%b" "       $0 [OPTIONS] for-all-repos [KASOPTIONS] KASFILE COMMAND\n"
+	printf "%b" "Usage: $0 [OPTIONS] { build | checkout | shell } [KASOPTIONS] [KASFILE]\n"
+	printf "%b" "       $0 [OPTIONS] for-all-repos [KASOPTIONS] [KASFILE] COMMAND\n"
 	printf "%b" "       $0 [OPTIONS] clean\n"
 	printf "%b" "\nPositional arguments:\n"
 	printf "%b" "build\t\t\tCheck out repositories and build target.\n"
@@ -288,7 +288,10 @@ while [ $# -gt 0 ] && [ $KAS_EXTRA_BITBAKE_ARGS -eq 0 ]; do
 	esac
 done
 
-[ -n "${KAS_FIRST_FILE}" ] || usage
+if [ -z "${KAS_FIRST_FILE}" ]; then
+	KAS_FIRST_FILE="${KAS_WORK_DIR}/.config.yaml"
+	KAS_FILES="${KAS_FIRST_FILE}"
+fi
 
 BUILD_SYSTEM=$(grep -e "^build_system: " "${KAS_FIRST_FILE}" 2>/dev/null | sed 's/build_system:[ ]\+//')
 if [ "${BUILD_SYSTEM}" = "isar" ]; then

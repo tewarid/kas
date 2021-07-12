@@ -38,6 +38,8 @@ from .context import get_context
 __license__ = 'MIT'
 __copyright__ = 'Copyright (c) Siemens AG, 2017-2018'
 
+CONFIG_YAML_FILE = '.config.yaml'
+
 
 class LogOutput:
     """
@@ -357,7 +359,8 @@ def ssh_no_host_key_check():
 
 def setup_parser_common_args(parser):
     parser.add_argument('config',
-                        help='Config file')
+                        help='Config file',
+                        nargs='?', default=CONFIG_YAML_FILE)
     parser.add_argument('--skip',
                         help='Skip build steps',
                         default=[])
